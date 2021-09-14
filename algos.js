@@ -485,7 +485,39 @@ function parensValid(myString){
 function bracesValid(myString){
     let bracesArray = []
     for(let i = 0;i<myString.length;i++){
-        //switch statement
+        switch (myString.charAt(i)){
+            case '[':
+            case '{':
+            case '(':
+                bracesArray.push(myString.charAt(i))
+                break
+            case ')':
+                if(bracesArray[bracesArray.length-1]!='('){
+                    return false
+                }else{
+                    bracesArray.pop()
+                }
+                break
+            case ']':
+                if(bracesArray[bracesArray.length-1]!='['){
+                    return false
+                }else{
+                    bracesArray.pop()
+                }
+                break
+            case '}':
+                if(bracesArray[bracesArray.length-1]!='{'){
+                    return false
+                }else{
+                    bracesArray.pop()
+                }
+                break
+            default:
+                break
+            
+        }
     }
     return bracesArray.length==0
 }
+// console.log(bracesValid("()[{]}"))
+// console.log(bracesValid("()[{}]"))
