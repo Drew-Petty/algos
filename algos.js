@@ -541,3 +541,45 @@ function longestPalindrome(myString){
 }
 
 // console.log(longestPalindrome("My favorite racecar erupted!"))
+function bookIndex(myArray){
+    if(myArray.length == 0){
+        return ""
+    }
+    let result = myArray[0].toString()
+    let index = 1
+    while(index<myArray.length){
+        if(myArray[index]>myArray[index-1]+1){
+            result = result + ', '+myArray[index].toString()
+        }else{
+            result = result + '-'
+            while(myArray[index+1]==myArray[index]+1){
+                index++
+            }
+            result = result+myArray[index].toString()
+        }
+        index++
+    }
+    return result
+}
+// console.log(bookIndex( [1, 3, 4, 5, 7, 8, 10]))
+function commonSuffix(myArray){
+    var suffix =""
+    var maxSuffix = myArray[0].length
+    for(let i = 0; i<maxSuffix;i++){
+        let character = myArray[0].charAt(myArray[0].length-1-i)
+        let inSuffix = true
+        for(let word of myArray){
+            if(word.charAt(word.length-1-i)!=character){
+                inSuffix=false
+            }
+        }
+        if(inSuffix){
+            suffix = character+suffix
+        }else{
+            break
+        }
+    }
+    return suffix
+}
+// console.log(commonSuffix(["ovation", "notation", "action"]))
+// console.log(commonSuffix(["nice", "ice", "sic"]))
