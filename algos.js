@@ -521,3 +521,23 @@ function bracesValid(myString){
 }
 // console.log(bracesValid("()[{]}"))
 // console.log(bracesValid("()[{}]"))
+function isPalindrome(myString){
+    const half = Math.floor(myString.length/2)
+    for(let i = 0; i<half;i++){
+        if(myString.charAt(i)!=myString.charAt(myString.length-1-i)){
+            return false
+        }
+    }
+    return true
+}
+function longestPalindrome(myString){
+    for(var i = myString.length; i>0; i-- ){
+        for(var j =0; j<=myString.length-i;j++){
+            if(isPalindrome(myString.substr(j,i))){
+                return myString.substr(j,i)
+            }
+        }
+    }   
+}
+
+// console.log(longestPalindrome("My favorite racecar erupted!"))
