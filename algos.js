@@ -583,3 +583,495 @@ function commonSuffix(myArray){
 }
 // console.log(commonSuffix(["ovation", "notation", "action"]))
 // console.log(commonSuffix(["nice", "ice", "sic"]))
+
+class Node{
+    constructor(value){
+        this.next = null;
+        this.value = value;
+    }
+    removeSelf(){
+        this.next = null
+        this.value =  null
+    }
+}
+class SinglyLinkedList{
+    constructor(){
+        this.head = null
+    }
+    isEmpty(){
+        return !this.head?true:false
+
+    }
+    printList(){
+        var runner = this.head
+        while(runner){
+            console.log(runner.value)
+            runner = runner.next
+        }
+    }
+    addFront(value){
+        var newNode = new Node(value)
+        newNode.next = this.head
+        this.head = newNode
+    }
+    removeFrontNode(){
+        var returnNode = this.head
+        this.head = this.head.next
+        returnNode.next = null
+        return returnNode
+    }
+    front(){
+        return this.head.value
+    }
+    contains(searchValue){
+        var runner = this.head
+        while(runner){
+            if(runner.value == searchValue){
+                return true
+            }
+            runner = runner.next
+        }
+        return false
+    }
+    length(){
+        var count = 0
+        var runner = this.head
+        while(runner){
+            count++
+            runner=runner.next
+        }
+        return count
+    }
+    display(){
+        var nodeString = ""
+        var runner = this.head
+        while(runner){
+            nodeString = nodeString+runner.value
+            if(runner.next)(
+                nodeString = nodeString +', '
+            )
+            runner = runner.next
+        }
+        console.log(nodeString)
+    }
+    average(){
+        var sum = 0
+        var count = 0
+        var runner = this.head
+        while(runner){
+            sum += runner.value
+            count++
+            runner = runner.next
+        }
+        return sum/count
+    }
+    min(){
+        if(this.head==null){
+            return null
+        }
+        var min = this.head.value
+        var runner = this.head.next
+        while(runner){
+            if(runner.value<min){
+                min= runner.value
+            }
+            runner = runner.next
+        }
+        return min
+    }
+    max(){
+        if(this.head==null){
+            return null
+        }
+        var max = this.head.value
+        var runner = this.head.next
+        while(runner){
+            if(runner.value>max){
+                max= runner.value
+            }
+            runner = runner.next
+        }
+        return max
+    }
+    back(){
+        var runner = this.head
+        while(runner.next){
+            runner = runner.next
+        }
+        return runner.value
+    }
+    removeBackNode(){
+        var runner = this.head
+        if(!runner){
+            return
+        }
+        if(!runner.next){
+            this.head = null
+            return runner
+        }
+        while(runner.next.next){
+            runner = runner.next
+        }
+        var returnNode = runner.next
+        runner.next = null
+        return returnNode
+    }
+    addBack(value){
+        var node = new Node(value)
+        if(!this.head){
+            this.head = node
+            return
+        }
+        var runner = this.head
+        while(runner.next){
+            runner = runner.next
+        }
+        runner.next = node
+    }
+    removeNodeWithValue(value){
+        if(!this.head){
+            return "empty list"
+        }
+        if(this.head.value == value){
+            return this.removeFrontNode()
+        }
+        var runner = this.head
+        while(runner.next){
+            if(runner.next.value == value){
+                var returnNode = runner.next
+                runner.next = runner.next.next
+                returnNode.next = null
+                return returnNode
+            }
+            runner = runner.next
+        }
+        return 'value not found'
+    }
+    prependValue(value, before){
+        if(!this.contains(before)){
+            this.addBack(value)
+            return
+        }
+        if(this.head.value == before){
+            this.addFront(value)
+            return
+        }
+        var runner = this.head
+        var newNode = new Node(value)
+        while(runner.next){
+            if(runner.next.value == before){
+                
+                newNode.next = runner.next
+                runner.next = newNode
+                return
+            }
+            runner = runner.next
+        }
+    }
+    appendValue(value, after){
+        if(!this.contains(after)){
+            this.addBack(value)
+            return
+        }
+        var newNode = new Node(value)
+        var runner = this.head
+        while(runner){
+            if(runner.value == after){
+                newNode.next = runner.next
+                runner.next = newNode
+                return
+            }
+            runner = runner.next
+        }
+    }
+    splitOnValue(value){
+        var returnList = new SinglyLinkedList()
+        if(!this.contains(value)){
+            return returnList
+        }
+        if(this.head.value == value){
+            returnList.head = this.head
+            this.head = null
+            return returnList
+        }
+        var runner = this.head
+        while(runner.next){
+            if(runner.next.value == value){
+                returnList.head = runner.next
+                runner.next = null
+                return returnList
+            }
+            runner = runner.next
+        }
+    }
+    joinList(list){
+        if(this.head == null){
+            this.head= list.head
+            return
+        }
+        var runner = this.head
+        while(runner.next){
+            runner = runner.next
+        }
+        runner.next = list.head
+        list.head = null
+    }
+    partition(value){
+        if(!this.contains(value)){
+            return
+        }
+        var beforeList = new SinglyLinkedList()
+        var equalList = new SinglyLinkedList()
+        var afterList = new SinglyLinkedList()
+        var runner = this.head
+        while(runner){
+            if(runner.value<value){
+                beforeList.addFront(runner.value)
+            }
+            if(runner.value>value){
+                afterList.addFront(runner.value)
+            }
+            if(runner.value==value){
+                equalList.addFront(runner.value)
+            }
+            runner= runner.next
+        }
+        this.head = beforeList.head
+        this.joinList(equalList)
+        this.joinList(afterList)
+    }
+    deleteList(){
+        var firstRunner = this.head.next
+        var secondRunner = this.head
+        while(secondRunner){
+            secondRunner.removeSelf()
+            secondRunner = firstRunner
+            if(firstRunner!= null){
+                firstRunner = firstRunner.next
+            }
+        }
+    }
+    deDupeList(){
+        var usedValues = [this.head.value]
+        var runner = this.head
+        while(runner.next){
+            if(usedValues.includes(runner.next.value)){
+                var remove = runner.next
+                runner.next = runner.next.next
+                remove.removeSelf()
+            }else{
+                usedValues.push(runner.next.value)
+                runner=runner.next
+            }
+        }
+    }
+    subListBeforeIndex(index){
+        var returnList = new SinglyLinkedList()
+        var runner = this.head
+        for(var i = 0; i<index; i++){
+            returnList.addBack(runner.value)
+            runner = runner.next
+        }
+        return returnList
+    }
+    deDupeWithoutBuffer(){
+        var count = 1
+        var runner = this.head
+        while(runner.next){
+            var subList = this.subListBeforeIndex(count)
+            if(subList.contains(runner.next.value)){
+                var remove = runner.next
+                runner.next = runner.next.next
+                remove.removeSelf()
+            }else{
+                runner = runner.next
+                count++
+            }
+            subList.deleteList()
+        }
+    }
+    reverseList(){
+        var firstRunner = this.head.next
+        var secondRunner = this.head.next
+        var thirdRunner = this.head
+        thirdRunner.next = null
+        while(firstRunner){
+            firstRunner = firstRunner.next
+            secondRunner.next = thirdRunner
+            thirdRunner = secondRunner
+            secondRunner = firstRunner
+            if(!firstRunner){
+                this.head = thirdRunner
+            }
+        }
+    }
+}
+
+// const myList = new SinglyLinkedList()
+// console.log(myList.isEmpty())
+// myList.addFront(1)
+// myList.addFront(2)
+// myList.addFront(3)
+// myList.addFront(4)
+// myList.addFront(5)
+// myList.addFront(6)
+// myList.addFront(7)
+// myList.addFront(8)
+// console.log(myList.isEmpty())
+// myList.display()
+
+function average(myArray){
+    var sum = 0
+    for(var value of myArray){
+        sum += value
+    }
+    return sum/myArray.length
+}
+// console.log(average([1,1,1,5,5,5,6,7]))
+function balancePoint(myArray){
+    var array = myArray.slice()
+    var left = 0
+    var right = 0
+    while(array.length>0){
+        if(left>right){
+            right+=array.pop()
+        }else{
+            left+=array.shift()
+        }
+    }
+    console.log(left)
+    console.log(right)
+
+    return right == left
+}
+// console.log(balancePoint([1,2,3,4,10]))
+// console.log(balancePoint([1,2,3,2,1]))
+function balanceIndex(myArray){
+    var array = myArray.slice()
+    var left = 0
+    var right = 0
+    var index = 0
+    if(array.length==1){
+        return 0
+    }
+    while(array.length>1){
+        if(array[0]==0){
+            array.shift()
+            index++
+        }else if(array[array.length-1]==0){
+            array.pop()
+        }else if(left>right){
+            right+=array.pop()
+        }else{
+            index++
+            left+=array.shift()
+        }
+    }
+    return left==right?index:-1
+}
+// console.log(balanceIndex([9,9]))
+// console.log(balanceIndex([0,-2,5,7,0,3]))
+function tacoTruck(customerArray){
+    return [Math.floor(customerArray[0]/2),Math.floor(customerArray[1]/2)]
+}
+// console.log(tacoTruck([37,-16]))
+function flatten(myArray, result){
+    var returnArray = result || []
+    for(var item of myArray){
+        if(Array.isArray(item)){
+            returnArray = flatten(item, returnArray)
+        }else{
+            returnArray.push(item)
+        }
+    }
+    return returnArray
+}
+// console.log(flatten([1,[2,3],4,[]]))
+function removeDuplicates(myArray){
+    var workingArray = myArray.slice()
+    var length = workingArray.length
+    for(var i =length-1;i>=0;i--){
+        if(workingArray.slice(0,workingArray.length-2).includes(workingArray[workingArray.length-1])){
+            workingArray.pop()
+        }else{
+            workingArray.unshift(workingArray.pop())
+        }
+    }
+    return workingArray
+}
+// console.log(removeDuplicates([1,1,1,1,2,2,2,5,5,5]))
+// console.log(removeDuplicates([1]))
+
+function count(myArray, value){
+    var count = 0
+    for(var item of myArray){
+        if(item == value){
+            count++
+        }
+    }
+    return count
+}
+
+function mode(myArray){
+    var mode = myArray[0]
+    var modeCount = count(myArray,mode)
+    for(item of myArray){
+        if(modeCount<count(myArray,item)){
+            mode = item
+            modeCount =count(myArray, item)
+        }
+    }
+    return mode
+}
+// console.log(mode([2,2,2,5,5,5,6,6,5,4,1,1,2,8,4,6,9,4,4,5]))
+function combineSortedArrays(arrayOne, arrayTwo){
+    var arrayThree= []
+    while(arrayOne.length>0 || arrayTwo.length>0){
+        if(arrayOne.length == 0){
+            arrayThree.push(arrayTwo.shift())
+        }else if(arrayTwo.length ==0){
+            arrayThree.push(arrayOne.shift())
+        }else if(arrayOne[0]<arrayTwo[0]){
+            arrayThree.push(arrayOne.shift())
+        }else if(arrayOne[0]>arrayTwo[0]){
+            arrayThree.push(arrayTwo.shift())
+        }
+    }
+    return arrayThree
+}
+
+function medianSortedArrays(){
+    var myArray=[]
+    for(var array of arguments){
+        myArray = combineSortedArrays(myArray,array)
+    }
+    console.log(myArray)
+    if(myArray.length%2 !=0){
+        return myArray[Math.floor(myArray.length/2)]
+    }
+    return (myArray[myArray.length/2]+myArray[(myArray.length/2)-1])/2
+}
+// console.log(medianSortedArrays([1,2],[3,4],[5,6,7,8]))
+
+function sum(myArray){
+    var sum =0
+    for(var item of myArray){
+        sum +=item
+    }
+    return sum
+}
+function maxSubArray(myArray){
+    var returnArray = []
+    var max= sum(returnArray)
+    for(var i = 0;i<myArray.length;i++){
+        for(var j =1;j<=myArray.length;j++){
+            var subArray = myArray.slice(i,i+j)
+            if(sum(subArray)>max){
+                returnArray=subArray
+                max=sum(returnArray)
+            }
+        }
+    }
+    return returnArray
+}
+// console.log(maxSubArray([1,2,-4,3,-2,3,-1]))
